@@ -9,3 +9,5 @@ doesn't use any API and is such may break in the future. However, it provides th
 <b>contact-form.php</b> - Contact form with validation using JS and PHP. It is more secure and reliable to have form validation on both the client and the server side.
 <br><br>
 <b>5-jquery-form_validation.html</b> - Form validation using JQuery. Check for missing and invalid fields.
+<br><br>
+<b>code-player</b> - Code Player. A sandbox for creating a page with HTML, CSS and JS.
