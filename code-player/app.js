@@ -1,56 +1,30 @@
 $(document).ready(function(){
-    // $(".toolbar").controlgroup();
-    // input sections
-    $windowHtml = $(".stn-html");
-    $windowCss = $(".stn-css");
-    $windowJs = $(".stn-js");
-    $windowOutput = $(".stn-output");
-
-    // text areas
-    $htmlEditor = $(".ta-html");
-    $cssEditor = $(".ta-css");
-    $jsEditor = $(".ta-js");
-
-    $buttonHtml = $('.btn-html');
-    $buttonCss = $('.btn-css');
-    $buttonJs = $('.btn-js');
-
-    // style tags
-    $tagStyle = $("<style></style>");
-    $tagJs = $("<script></script>");
-
-    // output html
-    $("button").click(function(){
-        $(this).toggleClass("ui-state-active");
+    $(".toggleButton").hover(function(){
+        $(this).addClass("highlighted");
+    }, function(){
+        $(this).removeClass("highlighted");
+    }).click(function(){
+        $(this).toggleClass("active");
+        $(this).removeClass("highlighted");   
+        // get class of corresponding panel
+        let panelClass = $(this).attr('class').split(' ')[1] + "Panel";
+        $("." + panelClass).toggleClass("hidden");
+        let numberOfActivePanels = 4 - $('.yourclass').length;
+        
+        $(".panel").width(($(window).width() / numberOfActivePanels) - 10);
+        
+        
     });
 
-    $buttonHtml.click(function(){
-        if ($(this).hasClass("ui-state-active")) {
-            $windowHtml.show();
-        } else {
-            $windowHtml.hide();
-        }
-    })
-
-    $htmlEditor.keyup(function(){
-        $windowOutput.html($htmlEditor.val()).append($tagStyle).append($tagJs);
+    $("textarea").height($(window).height() - $("header").height() - 22);    
+    updateOutput();
+    $("textarea").on("change keyup paste", function(){
+        updateOutput();      
     });
-
-    $cssEditor.keyup(function(){
-        // if we edit styles and style tag does not exist, append it to output
-        if ($.contains($(this), $('style')) == false) {
-            $windowOutput.append($tagStyle);
-        }
-        $("style").html($(this).val());
-    });
-
-    $jsEditor.keyup(function(){
-        // if we edit js and script tag does not exist, append it to output
-        if ($.contains($(this), $('script')) == false) {
-            $windowOutput.append($tagJs);
-        }
-        $("script").html($(this).val());
-    });
-
-    // $windowOutput.html($output);
+    
 });
+
+function updateOutput() {
+    $("iframe").contents().find("html").html("<html><head><style type='text/css'>" + $(".cssPanel").val() + "</style></head><body>" + $(".htmlPanel").val() + "</body></html>"); 
+    document.getElementsByClassName("outputPanel")[0].contentWindow.eval($(".javascriptPanel").val());
+}
